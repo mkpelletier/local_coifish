@@ -1,0 +1,248 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Language strings for the CoIFish longitudinal profile plugin.
+ *
+ * @package    local_coifish
+ * @copyright  2026 South African Theological Seminary (ict@sats.ac.za)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['back_to_lecturer_list'] = 'Back to lecturer list';
+$string['back_to_overview'] = 'Back to risk overview';
+$string['coifish:apiaccess'] = 'Access CoIFish external API';
+$string['coifish:viewfullprofile'] = 'View full longitudinal student profiles';
+$string['coifish:viewlecturerprofile'] = 'View lecturer performance profiles';
+$string['coifish:viewprofile'] = 'View student longitudinal profiles in course';
+$string['col_course_name'] = 'Course';
+$string['col_courses'] = 'Courses';
+$string['col_date'] = 'Date';
+$string['col_engagement'] = 'Engagement pattern';
+$string['col_feedback'] = 'Feedback';
+$string['col_grade'] = 'Grade';
+$string['col_grade_trend'] = 'Grade trend';
+$string['col_intervention_response'] = 'Intervention response';
+$string['col_interventions'] = 'Interventions';
+$string['col_lecturer'] = 'Lecturer';
+$string['col_risk'] = 'Risk';
+$string['col_risk_factors'] = 'Risk factors';
+$string['col_selfregulation'] = 'Self-reg';
+$string['col_social'] = 'Social';
+$string['col_student'] = 'Student';
+$string['col_student_grade_trend'] = 'Student grade trend';
+$string['detail_level_full'] = 'Full detail (grades, metrics, intervention history)';
+$string['detail_level_patterns'] = 'Patterns only (risk indicators, engagement patterns, no grades)';
+$string['detail_level_summary'] = 'Summary (risk level, trend direction, intervention response)';
+$string['drilldown_avg_feedback'] = 'Feedback engagement';
+$string['drilldown_avg_grade'] = 'Average grade';
+$string['drilldown_course_history'] = 'Course history';
+$string['drilldown_no_history'] = 'No course history available yet.';
+$string['drilldown_recommendations'] = 'Recommendations';
+$string['engagement_pattern_consistent'] = 'Consistent';
+$string['engagement_pattern_declining'] = 'Starts strong, fades mid-semester';
+$string['engagement_pattern_growing'] = 'Starts slow, builds over time';
+$string['engagement_pattern_irregular'] = 'Irregular';
+$string['engagement_pattern_unknown'] = 'Insufficient data';
+$string['export_col_communication'] = 'Communication (hours)';
+$string['export_col_course'] = 'Course';
+$string['export_col_from'] = 'From';
+$string['export_col_lecturer'] = 'Lecturer';
+$string['export_col_livesessions'] = 'Live sessions (hours)';
+$string['export_col_marking'] = 'Marking & feedback (hours)';
+$string['export_col_shortname'] = 'Course code';
+$string['export_col_to'] = 'To';
+$string['export_col_total'] = 'Total (hours)';
+$string['export_desc'] = 'Export a CSV report of lecturer time commitments per course for a selected date range. The report includes estimated hours for marking, student communication, and live sessions.';
+$string['export_download'] = 'Download CSV';
+$string['export_link'] = 'Export time report';
+$string['export_title'] = 'Lecturer time commitment report';
+$string['filter_all_categories'] = 'All categories';
+$string['filter_all_cohorts'] = 'All my cohorts';
+$string['filter_apply'] = 'Apply';
+$string['filter_category'] = 'Course category';
+$string['filter_cohort'] = 'Cohort';
+$string['filter_risk_all'] = 'All at-risk';
+$string['filter_risk_high'] = 'High risk only';
+$string['filter_risk_level'] = 'Risk level';
+$string['filter_risk_moderate'] = 'Moderate risk only';
+$string['intervention_response_mixed'] = 'Mixed response to interventions';
+$string['intervention_response_none'] = 'No prior interventions recorded';
+$string['intervention_response_positive'] = 'Responds positively to interventions';
+$string['intervention_response_unresponsive'] = 'Limited response to interventions';
+$string['lecturer_courses'] = 'courses';
+$string['lecturer_dim_feedback_coverage'] = 'Feedback coverage';
+$string['lecturer_dim_feedback_depth'] = 'Feedback depth';
+$string['lecturer_dim_feedback_personalisation'] = 'Feedback personalisation';
+$string['lecturer_dim_feedback_quality'] = 'Feedback quality';
+$string['lecturer_dim_forum_engagement'] = 'Forum engagement';
+$string['lecturer_dim_grading_turnaround'] = 'Grading turnaround';
+$string['lecturer_dim_intervention_effectiveness'] = 'Intervention effectiveness';
+$string['lecturer_dim_student_outcomes'] = 'Student outcomes';
+$string['lecturer_dimensions'] = 'Dimension breakdown';
+$string['lecturer_feedback_quality'] = 'Feedback quality';
+$string['lecturer_filter_active'] = 'Showing filtered data. Some metrics (feedback quality, student outcomes) use all-time data as they require course completion.';
+$string['lecturer_filter_all_courses'] = 'All courses';
+$string['lecturer_filter_clear'] = 'Clear';
+$string['lecturer_filter_course'] = 'Course';
+$string['lecturer_filter_from'] = 'From';
+$string['lecturer_filter_to'] = 'To';
+$string['lecturer_focus_areas'] = 'Focus areas';
+$string['lecturer_focus_feedback_coverage'] = 'Some assessments may lack feedback. Aim to provide feedback on all submitted work.';
+$string['lecturer_focus_feedback_depth'] = 'Feedback could be more detailed. Try incorporating explanations of why marks were awarded or lost.';
+$string['lecturer_focus_feedback_personalisation'] = 'Try referencing specific student work in feedback to make it feel more personal and targeted.';
+$string['lecturer_focus_feedback_quality'] = 'Consider enriching feedback with more specific, actionable guidance for students.';
+$string['lecturer_focus_forum_engagement'] = 'Increasing forum participation can strengthen teaching presence and model scholarly discourse.';
+$string['lecturer_focus_grading_turnaround'] = 'Grading turnaround could be faster. Students benefit from timely feedback while the work is still fresh.';
+$string['lecturer_focus_intervention_effectiveness'] = 'Interventions have had limited impact. Consider trying different approaches or involving student support services.';
+$string['lecturer_focus_student_outcomes'] = 'Student grades are lower than average. Investigate potential barriers and consider early diagnostic assessment.';
+$string['lecturer_intervention_eff'] = 'Intervention effectiveness';
+$string['lecturer_kpi_intv_improved'] = 'Led to improvement';
+$string['lecturer_kpi_intv_rate'] = 'Effectiveness rate';
+$string['lecturer_kpi_intv_total'] = 'Total interventions';
+$string['lecturer_kpi_outcomes_avg'] = 'Average student grade';
+$string['lecturer_kpi_outcomes_trend'] = 'Trend across courses';
+$string['lecturer_kpi_turnaround_unit'] = 'average days from submission to grade';
+$string['lecturer_method_bench_coverage'] = '80% of graded items have written feedback = 100 score.';
+$string['lecturer_method_bench_depth'] = '50 words average per comment = 100 score.';
+$string['lecturer_method_bench_personalisation'] = '70% unique comments = 100 score.';
+$string['lecturer_method_col_benchmark'] = 'Benchmark (100%)';
+$string['lecturer_method_col_indicator'] = 'Indicator';
+$string['lecturer_method_col_source'] = 'Data source';
+$string['lecturer_method_feedback_cite'] = 'Hattie, J., & Timperley, H. (2007). The power of feedback. Review of Educational Research, 77(1), 81-112. Nicol, D. J., & Macfarlane-Dick, D. (2006). Formative assessment and self-regulated learning. Studies in Higher Education, 31(2), 199-218. Boud, D., & Molloy, E. (2013). Rethinking models of feedback for learning. Assessment & Evaluation in Higher Education, 38(6), 698-712.';
+$string['lecturer_method_feedback_desc'] = 'Feedback quality is a composite of three sub-metrics averaged across all courses the lecturer teaches. The data is pre-computed by the CoIFish grade report\'s daily scheduled task and cached in the feedback metrics table.';
+$string['lecturer_method_feedback_title'] = 'Feedback quality';
+$string['lecturer_method_forum_cite'] = 'Anderson, T., Rourke, L., Garrison, D. R., & Archer, W. (2001). Assessing teaching presence in a computer conferencing context. Journal of Asynchronous Learning Networks, 5(2), 1-17. Garrison, D. R., Anderson, T., & Archer, W. (2000). Critical inquiry in a text-based environment: Computer conferencing in higher education. The Internet and Higher Education, 2(2-3), 87-105.';
+$string['lecturer_method_forum_desc'] = 'Average forum posts per week across all courses where the lecturer teaches. Includes both new discussion creation and replies. Calculated as total posts divided by total course weeks. A benchmark of 3 posts per week = 100 score. Forum participation by the instructor is a key indicator of teaching presence in the Community of Inquiry framework, specifically the "facilitating discourse" dimension.';
+$string['lecturer_method_forum_title'] = 'Forum engagement';
+$string['lecturer_method_intervention_cite'] = 'Clow, D. (2012). The learning analytics cycle: Closing the loop effectively. Proceedings of the 2nd International Conference on Learning Analytics and Knowledge, 134-138. Wise, A. F. (2014). Designing pedagogical interventions to support student use of learning analytics. Proceedings of LAK 2014, 203-211.';
+$string['lecturer_method_intervention_desc'] = 'Measures how often the lecturer records interventions for at-risk students and whether those interventions lead to measurable improvement. The system captures a snapshot of each student\'s key metrics (grade, engagement, social presence, feedback review) at the time of intervention, then re-measures at configurable intervals (default: 7, 14, and 28 days). Outcomes are classified as improved, stable, or declined by comparing the snapshot to the follow-up measurement, weighted by the diagnostic type that triggered the intervention. The effectiveness score is the percentage of interventions that resulted in improvement.';
+$string['lecturer_method_intervention_title'] = 'Intervention effectiveness';
+$string['lecturer_method_intro'] = 'This profile aggregates teaching activity data across all courses where this lecturer holds a teacher or editing teacher role. Each dimension is scored 0-100 against a research-informed benchmark, computed daily by a scheduled task. The following sections explain what is measured, where the data comes from, and the research basis for each metric.';
+$string['lecturer_method_link'] = 'How is this determined?';
+$string['lecturer_method_outcomes_desc'] = 'Average final grade percentage of students taught by this lecturer, computed from course snapshots in the longitudinal profile system. The trend direction (improving, stable, declining) is calculated using linear regression on average student grades ordered by course end date. This metric reflects how students perform in this lecturer\'s courses over time, though many factors beyond the lecturer\'s control influence student grades.';
+$string['lecturer_method_outcomes_title'] = 'Student outcomes';
+$string['lecturer_method_source_coverage'] = 'Percentage of graded assignment submissions with a non-empty written comment or inline PDF annotation.';
+$string['lecturer_method_source_depth'] = 'Average word count of feedback comments after stripping HTML tags.';
+$string['lecturer_method_source_personalisation'] = 'Ratio of unique (non-duplicated) feedback comments per assignment. Comments are normalised (lowercase, trimmed) before comparison.';
+$string['lecturer_method_strengths_desc'] = 'Strengths are the top 3 dimensions where the lecturer scores highest (0-100). Focus areas are the bottom 3 dimensions where scores are lowest, excluding any that already appear as strengths. Each strength or focus area includes a contextualised description with constructive guidance. The intent is to highlight what is working well while providing specific, actionable direction for growth areas. Dimensions are scored against the benchmarks described above.';
+$string['lecturer_method_strengths_title'] = 'Strengths and focus areas';
+$string['lecturer_method_time_cite'] = 'Worley, W. L., & Tesdell, L. S. (2009). Instructor time and effort in online and face-to-face teaching: Lessons learned. IEEE Transactions on Professional Communication, 52(2), 138-151. Found that online instruction required substantially more preparation time than face-to-face delivery.';
+$string['lecturer_method_time_desc'] = 'Time estimates are derived from LMS event logs using session gap analysis. Events are ordered chronologically and grouped into sessions: events within 30 minutes of each other are considered part of the same session, and gaps exceeding 30 minutes start a new session. Each session\'s duration is the time between its first and last event (minimum 1 minute). Three activity buckets are tracked: marking and feedback (grading events, unified grader annotations, feedback comment creation), student communication (messages, forum posts, announcements), and live sessions (BigBlueButton recordings or log-based estimation plus a configurable preparation multiplier).';
+$string['lecturer_method_time_title'] = 'Activity time estimation';
+$string['lecturer_method_title'] = 'Lecturer profile methodology';
+$string['lecturer_method_turnaround_cite'] = 'Gibbs, G., & Simpson, C. (2004). Conditions under which assessment supports student learning. Learning and Teaching in Higher Education, 1(1), 3-31. Condition 8: "Feedback is timely in that it is received by students while it still matters to them and they can use it."';
+$string['lecturer_method_turnaround_desc'] = 'Average number of days between a student submitting an assignment and the lecturer grading it, computed across all courses. Calculated from assign_submission.timemodified to assign_grades.timemodified where the lecturer is the grader. The target and maximum days are configurable in the CoIFish grade report settings. Grading within the target = 100 score; at or beyond the maximum = 0 score, with linear interpolation between.';
+$string['lecturer_method_turnaround_title'] = 'Grading turnaround';
+$string['lecturer_no_profile'] = 'No lecturer profile data available yet. Profiles are built from teaching activity.';
+$string['lecturer_profile_title'] = 'Lecturer profile: {$a}';
+$string['lecturer_profiles_title'] = 'Lecturer profiles';
+$string['lecturer_strength_feedback_coverage'] = 'Achieves strong feedback coverage across submitted assessments.';
+$string['lecturer_strength_feedback_depth'] = 'Delivers in-depth, substantive feedback that goes beyond surface corrections.';
+$string['lecturer_strength_feedback_personalisation'] = 'Tailors feedback to individual student needs and contexts.';
+$string['lecturer_strength_feedback_quality'] = 'Consistently provides high-quality feedback that supports student learning.';
+$string['lecturer_strength_forum_engagement'] = 'Actively engaged in forum discussions, building teaching presence.';
+$string['lecturer_strength_grading_turnaround'] = 'Returns grades promptly, keeping students informed of their progress.';
+$string['lecturer_strength_intervention_effectiveness'] = 'Interventions are effective, with students showing measurable improvement.';
+$string['lecturer_strength_student_outcomes'] = 'Students consistently achieve strong academic outcomes.';
+$string['lecturer_strengths'] = 'Strengths';
+$string['lecturer_student_outcomes'] = 'Student outcomes';
+$string['lecturer_summary_title'] = 'Key performance indicators';
+$string['lecturer_time_communication'] = 'Student communication';
+$string['lecturer_time_disclaimer'] = 'Time estimates are derived from LMS activity logs using session gap analysis. Live session hours include a configurable preparation multiplier. These approximate time spent but may not capture all offline preparation or activity outside the LMS.';
+$string['lecturer_time_hours'] = 'hours total';
+$string['lecturer_time_livesessions'] = 'Live sessions';
+$string['lecturer_time_marking'] = 'Marking & feedback';
+$string['lecturer_time_title'] = 'Estimated activity time';
+$string['lecturer_turnaround'] = 'Grading turnaround';
+$string['my_teaching_profile'] = 'My teaching profile';
+$string['no_atrisk_students'] = 'No at-risk students found matching the selected filters.';
+$string['no_lecturer_profiles'] = 'No lecturer profiles found matching the selected filters.';
+$string['organisation_mode_category'] = 'Course categories';
+$string['organisation_mode_cohort'] = 'Site cohorts';
+$string['pluginname'] = 'CoIFish Longitudinal Profile';
+$string['prep_multiplier_1'] = '1:1 (1 hour prep per 1 hour delivery)';
+$string['prep_multiplier_2'] = '2:1 (2 hours prep per 1 hour delivery) — recommended';
+$string['prep_multiplier_3'] = '3:1 (3 hours prep per 1 hour delivery)';
+$string['prep_multiplier_none'] = 'No preparation time (delivery only)';
+$string['privacy:metadata:local_coifish_profile'] = 'Longitudinal student profile data aggregated across courses.';
+$string['profile_academic_trajectory'] = 'Academic trajectory';
+$string['profile_courses_completed'] = 'Courses completed';
+$string['profile_early_warning'] = 'Early warning';
+$string['profile_engagement_pattern'] = 'Engagement pattern';
+$string['profile_heading'] = 'Longitudinal profile';
+$string['profile_intervention_history'] = 'Intervention response';
+$string['profile_no_data'] = 'No longitudinal data available yet. Profiles are built from completed courses.';
+$string['profile_risk_high'] = 'High risk';
+$string['profile_risk_low'] = 'Low risk';
+$string['profile_risk_moderate'] = 'Moderate risk';
+$string['profile_selfregulation'] = 'Self-regulation trend';
+$string['profile_social_presence'] = 'Social presence pattern';
+$string['rec_engagement_decline'] = 'This student typically disengages mid-semester. Schedule a proactive check-in around week 4-5 before the pattern repeats, and consider front-loading key support resources.';
+$string['rec_feedback_neglect'] = 'This student rarely reviews feedback. Walk them through their feedback on the first graded assignment to model the habit, and consider making feedback review a prerequisite for the next submission.';
+$string['rec_grade_decline'] = 'Grades have been declining across courses. Investigate whether prerequisite knowledge gaps are compounding, and consider diagnostic assessment early in the course to identify specific areas of difficulty.';
+$string['rec_intervention_positive'] = 'This student has responded well to previous interventions. Continue with proactive support and early contact to maintain the positive trajectory.';
+$string['rec_intervention_unresponsive'] = 'Previous interventions have had limited effect. Consider a different approach: try a different intervention type, involve student support services, or explore whether external factors are at play.';
+$string['rec_irregular'] = 'This student shows an irregular engagement pattern across courses. Help establish a consistent routine early by setting clear weekly expectations and providing structured checkpoints.';
+$string['rec_late_starter'] = 'This student tends to start slowly but builds momentum over time. Provide early encouragement and scaffolded activities in the first few weeks to accelerate their engagement.';
+$string['rec_social_isolation'] = 'This student has been persistently isolated across courses. Pair them with an active peer early, assign collaborative tasks, and consider a personal welcome message to help them feel connected from day one.';
+$string['risk_factor_engagement_decline'] = 'History of mid-semester engagement decline';
+$string['risk_factor_feedback_neglect'] = 'Consistently low feedback engagement across courses';
+$string['risk_factor_grade_decline'] = 'Declining grades across courses';
+$string['risk_factor_intervention_unresponsive'] = 'Previous interventions have not yielded improvement';
+$string['risk_factor_social_isolation'] = 'Persistent social isolation across courses';
+$string['risk_overview_title'] = 'Student risk overview';
+$string['setting_api_enabled'] = 'Enable external API';
+$string['setting_api_enabled_desc'] = 'Allow external systems (e.g. your institutional SIS) to query student profile data via web service endpoints. Requires a user with the apiaccess capability and a valid web service token.';
+$string['setting_api_heading'] = 'External API';
+$string['setting_api_heading_desc'] = 'Configure access for external systems such as your Student Information System (SIS).';
+$string['setting_cohort_programmes'] = 'Programme cohorts and course patterns';
+$string['setting_cohort_programmes_desc'] = 'Select which cohorts represent programmes and map each to a course shortname regex pattern. The cohort identifies the programme coordinator (PC). The pattern matches courses belonging to that programme, which determines which lecturers and students the PC can see. For example, <code>^THE</code> matches courses like THE1120, THE2201.';
+$string['setting_cohortpatterns_col_cohort'] = 'Cohort';
+$string['setting_cohortpatterns_col_pattern'] = 'Course shortname pattern (regex)';
+$string['setting_cohortpatterns_nocohorts'] = 'No system-level cohorts found. Create cohorts at Site Administration > Users > Cohorts first.';
+$string['setting_cohortpatterns_placeholder'] = 'e.g. ^THE';
+$string['setting_course_category'] = 'Limit course matching to category';
+$string['setting_course_category_all'] = 'All categories';
+$string['setting_course_category_desc'] = 'Only match courses within this category and its subcategories. Use this to exclude development or test courses in other categories from the reports.';
+$string['setting_included_cohorts'] = 'Included cohorts';
+$string['setting_min_courses'] = 'Minimum courses for profile';
+$string['setting_min_courses_desc'] = 'Number of completed courses required before a longitudinal profile is generated for a student.';
+$string['setting_organisation_mode'] = 'Organisation mode';
+$string['setting_organisation_mode_desc'] = 'Controls how reports are organised and filtered. "Course categories" groups lecturers and students by the category tree. "Site cohorts" pairs programme coordinators with the lecturers and students in their cohorts.';
+$string['setting_prep_multiplier'] = 'Live session preparation multiplier';
+$string['setting_prep_multiplier_desc'] = 'Estimated preparation time per hour of live session delivery. Research on online teaching workload suggests substantial preparation time relative to delivery (Worley & Tesdell, 2009). The preparation hours are added to the recorded/estimated delivery time.';
+$string['setting_privacy_heading'] = 'Privacy controls';
+$string['setting_privacy_heading_desc'] = 'Control what level of detail is shared with course teachers. Programme coordinators with the viewfullprofile capability always see full detail.';
+$string['setting_profile_enabled'] = 'Enable profile building';
+$string['setting_profile_enabled_desc'] = 'When enabled, a scheduled task builds longitudinal student profiles from completed course data. Disable to stop processing.';
+$string['setting_profile_heading'] = 'Longitudinal profiles';
+$string['setting_profile_heading_desc'] = 'Configure how student profiles are built from historical course data across the institution.';
+$string['setting_teacher_detail'] = 'Detail level for course teachers';
+$string['setting_teacher_detail_desc'] = 'Controls how much longitudinal data a course teacher can see. Programme coordinators always see full detail.';
+$string['setting_teaching_roles'] = 'Teaching roles';
+$string['setting_teaching_roles_desc'] = 'Select which roles are considered teaching roles for lecturer profile analytics. Users with these roles in a course will be treated as lecturers. If none are selected, the plugin falls back to roles with the grading capability.';
+$string['student_profile_title'] = 'Student profile: {$a}';
+$string['summary_high_risk'] = 'High risk';
+$string['summary_moderate_risk'] = 'Moderate risk';
+$string['summary_total_atrisk'] = 'Total at-risk';
+$string['task_build_profiles'] = 'Build longitudinal student profiles';
+$string['trajectory_declining'] = 'Declining';
+$string['trajectory_improving'] = 'Improving';
+$string['trajectory_stable'] = 'Stable';
+$string['trajectory_unknown'] = 'Insufficient data';

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/coifish/db" VERSION="2026040100" COMMENT="CoIFish longitudinal profile tables">
+  <TABLES>
+    <TABLE NAME="local_coifish_profile" COMMENT="Aggregated longitudinal student profile built from historical course data.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Student user ID"/>
+        <FIELD NAME="coursescompleted" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="coursesinprogress" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="avggrade" TYPE="number" LENGTH="7" DECIMALS="2" NOTNULL="false" SEQUENCE="false" COMMENT="Average final grade % across completed courses"/>
+        <FIELD NAME="gradetrend" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="unknown" SEQUENCE="false" COMMENT="improving, stable, declining, unknown"/>
+        <FIELD NAME="engagementpattern" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="unknown" SEQUENCE="false" COMMENT="consistent, declining, growing, irregular, unknown"/>
+        <FIELD NAME="avgsocial" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Average social presence rate 0-100 across courses"/>
+        <FIELD NAME="socialtrend" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="unknown" SEQUENCE="false"/>
+        <FIELD NAME="avgselfregulation" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Average self-regulation composite 0-100"/>
+        <FIELD NAME="selfregtrend" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="unknown" SEQUENCE="false"/>
+        <FIELD NAME="avgfeedbackpct" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Average feedback review % across courses"/>
+        <FIELD NAME="totalinterventions" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="interventionsimproved" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="interventionresponse" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="none" SEQUENCE="false" COMMENT="positive, mixed, unresponsive, none"/>
+        <FIELD NAME="risklevel" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="low" SEQUENCE="false" COMMENT="low, moderate, high"/>
+        <FIELD NAME="riskfactors" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON array of risk factor keys"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
+        <INDEX NAME="risklevel" UNIQUE="false" FIELDS="risklevel"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_coifish_course_snapshot" COMMENT="Per-course snapshot of a student's metrics at course completion, used to build the longitudinal profile.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="finalgrade" TYPE="number" LENGTH="7" DECIMALS="2" NOTNULL="false" SEQUENCE="false" COMMENT="Final course grade %"/>
+        <FIELD NAME="engagement" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Final engagement rate 0-100"/>
+        <FIELD NAME="social" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Final social presence rate 0-100"/>
+        <FIELD NAME="selfregulation" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Final self-regulation composite 0-100"/>
+        <FIELD NAME="feedbackpct" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Final feedback review %"/>
+        <FIELD NAME="cognitiveengagement" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Cognitive presence / learning depth 0-100"/>
+        <FIELD NAME="interventioncount" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="interventionsimproved" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="courseenddate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid_courseid" UNIQUE="true" FIELDS="userid, courseid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_coifish_lecturer" COMMENT="Aggregated lecturer performance profile across courses, built by scheduled task.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Lecturer user ID"/>
+        <FIELD NAME="coursecount" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="avgfeedbackquality" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Avg feedback composite 0-100"/>
+        <FIELD NAME="avgcoverage" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avgdepth" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avgpersonalisation" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avgturnarounddays" TYPE="number" LENGTH="7" DECIMALS="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="totalinterventions" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="interventionsimproved" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="interventioneffectiveness" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="Improvement rate 0-100"/>
+        <FIELD NAME="avgforumpostspw" TYPE="number" LENGTH="5" DECIMALS="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="avgstudentgrade" TYPE="number" LENGTH="7" DECIMALS="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="studentgradetrend" TYPE="char" LENGTH="15" NOTNULL="true" DEFAULT="unknown" SEQUENCE="false"/>
+        <FIELD NAME="hours_marking" TYPE="number" LENGTH="7" DECIMALS="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Estimated hours on marking and feedback"/>
+        <FIELD NAME="hours_communication" TYPE="number" LENGTH="7" DECIMALS="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Estimated hours on student communication"/>
+        <FIELD NAME="hours_livesessions" TYPE="number" LENGTH="7" DECIMALS="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Estimated hours in live sessions (BBB)"/>
+        <FIELD NAME="hours_total" TYPE="number" LENGTH="7" DECIMALS="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Combined total hours"/>
+        <FIELD NAME="strengths" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON array of strength keys"/>
+        <FIELD NAME="focusareas" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON array of focus area keys"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="true" FIELDS="userid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

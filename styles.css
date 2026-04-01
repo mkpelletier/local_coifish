@@ -1,0 +1,57 @@
+/* CoIFish Longitudinal Profile styles. */
+
+/* KPI summary cards — solid backgrounds with white text. */
+/* Colours chosen for WCAG AA contrast against white text. */
+/* Override Bootstrap's --bs-card-bg custom property to ensure colours apply. */
+
+.card.coifish-kpi-feedback {
+    --bs-card-bg: #2563eb;
+    --bs-card-border-color: #2563eb;
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.card.coifish-kpi-turnaround {
+    --bs-card-bg: #7c3aed;
+    --bs-card-border-color: #7c3aed;
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.card.coifish-kpi-intervention {
+    --bs-card-bg: #0891b2;
+    --bs-card-border-color: #0891b2;
+    background-color: #0891b2;
+    border-color: #0891b2;
+}
+
+.card.coifish-kpi-outcomes {
+    --bs-card-bg: #059669;
+    --bs-card-border-color: #059669;
+    background-color: #059669;
+    border-color: #059669;
+}
+
+/* KPI card text elements. */
+
+.coifish-kpi-label {
+    opacity: 0.85;
+}
+
+.coifish-kpi-empty {
+    opacity: 0.6;
+}
+
+/* KPI info icon — white, positioned at bottom of card. */
+
+.coifish-kpi-info {
+    display: inline-block;
+    margin-top: 0.25rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.coifish-kpi-info:hover {
+    color: #fff;
+}

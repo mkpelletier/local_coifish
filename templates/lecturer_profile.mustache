@@ -1,0 +1,653 @@
+{{!
+    @template local_coifish/lecturer_profile
+
+    Lecturer performance profile page.
+
+    Shows a single lecturer's teaching performance metrics including
+    feedback quality, grading turnaround, intervention effectiveness,
+    dimension breakdown with progress bars, strengths, and focus areas.
+
+    Context variables required for this template:
+    * hasprofile (bool) - Whether a lecturer profile exists.
+    * fullname (string) - The lecturer's full name.
+    * coursecount (int) - Number of courses taught.
+    * avgfeedbackquality (int|null) - Average feedback quality score.
+    * avgturnarounddays (float|null) - Average grading turnaround in days.
+    * interventioneffectiveness (int|null) - Intervention effectiveness percentage.
+    * avgstudentgrade (float|null) - Average student grade.
+    * studentgradetrendlabel (string) - Student grade trend label.
+    * dimensions (array) - Dimension breakdown for progress bars.
+    * hasdimensions (bool) - Whether dimensions exist.
+    * strengths (array) - Strength areas.
+    * hasstrengths (bool) - Whether strengths exist.
+    * focusareas (array) - Focus areas for improvement.
+    * hasfocusareas (bool) - Whether focus areas exist.
+    * isself (bool) - Whether the viewer is the lecturer.
+    * backurl (string|undefined) - URL back to lecturer list.
+
+    Example context (json):
+    {
+        "hasprofile": true,
+        "fullname": "Dr. Smith",
+        "coursecount": 4,
+        "avgfeedbackquality": 72,
+        "avgturnarounddays": 3.5,
+        "interventioneffectiveness": 65,
+        "avgstudentgrade": 68.2,
+        "studentgradetrendlabel": "Improving",
+        "dimensions": [],
+        "hasdimensions": true,
+        "strengths": [],
+        "hasstrengths": true,
+        "focusareas": [],
+        "hasfocusareas": true,
+        "isself": false,
+        "backurl": "/local/coifish/lecturerprofile.php"
+    }
+}}
+<div class="local-coifish-lecturer-profile">
+
+    {{! Back link for coordinators }}
+    {{#backurl}}
+    <div class="mb-3">
+        <a href="{{backurl}}" class="btn btn-sm btn-outline-secondary">
+            <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
+            {{#str}}back_to_lecturer_list, local_coifish{{/str}}
+        </a>
+    </div>
+    {{/backurl}}
+
+    {{! Date range filter }}
+    <form method="get" action="{{formurl}}" class="mb-4">
+        <input type="hidden" name="userid" value="{{userid}}">
+        <div class="row g-2 align-items-end">
+            {{#hascourses}}
+            <div class="col-sm-6 col-lg-3">
+                <label for="coifish-coursefilter" class="form-label small text-muted">
+                    {{#str}}lecturer_filter_course, local_coifish{{/str}}
+                </label>
+                <select name="courseid" id="coifish-coursefilter" class="form-select form-select-sm">
+                    <option value="0">{{#str}}lecturer_filter_all_courses, local_coifish{{/str}}</option>
+                    {{#courses}}
+                        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                    {{/courses}}
+                </select>
+            </div>
+            {{/hascourses}}
+            <div class="col-sm-3 col-lg-2">
+                <label for="coifish-datefrom" class="form-label small text-muted">
+                    {{#str}}lecturer_filter_from, local_coifish{{/str}}
+                </label>
+                <input type="date" class="form-control form-control-sm" id="coifish-datefrom"
+                       name="datefrom" value="{{datefrom}}">
+            </div>
+            <div class="col-sm-3 col-lg-2">
+                <label for="coifish-dateto" class="form-label small text-muted">
+                    {{#str}}lecturer_filter_to, local_coifish{{/str}}
+                </label>
+                <input type="date" class="form-control form-control-sm" id="coifish-dateto"
+                       name="dateto" value="{{dateto}}">
+            </div>
+            <div class="col-sm-3 col-lg-2">
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="fa fa-filter me-1" aria-hidden="true"></i>
+                    {{#str}}filter_apply, local_coifish{{/str}}
+                </button>
+            </div>
+            {{#hasfilter}}
+            <div class="col-sm-3 col-lg-2">
+                <a href="{{formurl}}?userid={{userid}}" class="btn btn-outline-secondary btn-sm w-100">
+                    <i class="fa fa-times me-1" aria-hidden="true"></i>
+                    {{#str}}lecturer_filter_clear, local_coifish{{/str}}
+                </a>
+            </div>
+            {{/hasfilter}}
+        </div>
+        {{#hasfilter}}
+        <div class="small text-muted mt-2">
+            <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+            {{#str}}lecturer_filter_active, local_coifish{{/str}}
+        </div>
+        {{/hasfilter}}
+    </form>
+
+    {{#hasprofile}}
+
+    {{! Header }}
+    <div class="d-flex align-items-center mb-4">
+        <h4 class="mb-0">
+            <i class="fa fa-user-circle me-2 text-muted" aria-hidden="true"></i>
+            {{fullname}}
+        </h4>
+        <span class="badge bg-secondary ms-3">
+            {{coursecount}} {{#str}}lecturer_courses, local_coifish{{/str}}
+        </span>
+    </div>
+
+    {{! Summary cards }}
+    <h5 class="mb-3">
+        <i class="fa fa-dashboard me-1" aria-hidden="true"></i>
+        {{#str}}lecturer_summary_title, local_coifish{{/str}}
+    </h5>
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-center text-white h-100 coifish-kpi-feedback">
+                <div class="card-body py-3">
+                    <i class="fa fa-comment-o mb-1" aria-hidden="true"></i>
+                    <div class="small coifish-kpi-label">{{#str}}lecturer_feedback_quality, local_coifish{{/str}}</div>
+                    <div class="fs-2 fw-bold">
+                        {{#avgfeedbackquality}}{{avgfeedbackquality}}%{{/avgfeedbackquality}}
+                        {{^avgfeedbackquality}}<span class="coifish-kpi-empty">-</span>{{/avgfeedbackquality}}
+                    </div>
+                    <a href="#" class="coifish-kpi-info" data-bs-toggle="modal" data-bs-target="#coifish-kpi-feedback-modal">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-center text-white h-100 coifish-kpi-turnaround">
+                <div class="card-body py-3">
+                    <i class="fa fa-clock-o mb-1" aria-hidden="true"></i>
+                    <div class="small coifish-kpi-label">{{#str}}lecturer_turnaround, local_coifish{{/str}}</div>
+                    <div class="fs-2 fw-bold">
+                        {{#avgturnarounddays}}{{avgturnarounddays}}d{{/avgturnarounddays}}
+                        {{^avgturnarounddays}}<span class="coifish-kpi-empty">-</span>{{/avgturnarounddays}}
+                    </div>
+                    <a href="#" class="coifish-kpi-info" data-bs-toggle="modal" data-bs-target="#coifish-kpi-turnaround-modal">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-center text-white h-100 coifish-kpi-intervention">
+                <div class="card-body py-3">
+                    <i class="fa fa-clipboard mb-1" aria-hidden="true"></i>
+                    <div class="small coifish-kpi-label">{{#str}}lecturer_intervention_eff, local_coifish{{/str}}</div>
+                    <div class="fs-2 fw-bold">
+                        {{#interventioneffectiveness}}{{interventioneffectiveness}}%{{/interventioneffectiveness}}
+                        {{^interventioneffectiveness}}<span class="coifish-kpi-empty">-</span>{{/interventioneffectiveness}}
+                    </div>
+                    <a href="#" class="coifish-kpi-info" data-bs-toggle="modal" data-bs-target="#coifish-kpi-intervention-modal">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-center text-white h-100 coifish-kpi-outcomes">
+                <div class="card-body py-3">
+                    <i class="fa fa-graduation-cap mb-1" aria-hidden="true"></i>
+                    <div class="small coifish-kpi-label">{{#str}}lecturer_student_outcomes, local_coifish{{/str}}</div>
+                    <div class="fs-2 fw-bold">
+                        {{#avgstudentgrade}}{{avgstudentgrade}}%{{/avgstudentgrade}}
+                        {{^avgstudentgrade}}<span class="coifish-kpi-empty">-</span>{{/avgstudentgrade}}
+                    </div>
+                    {{#studentgradetrendlabel}}
+                    <div class="small coifish-kpi-label">{{studentgradetrendlabel}}</div>
+                    {{/studentgradetrendlabel}}
+                    <a href="#" class="coifish-kpi-info" data-bs-toggle="modal" data-bs-target="#coifish-kpi-outcomes-modal">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{! KPI detail modals }}
+    <div class="modal fade" id="coifish-kpi-feedback-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-comment-o me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_feedback_title, local_coifish{{/str}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{#str}}lecturer_method_feedback_desc, local_coifish{{/str}}</p>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_dim_feedback_coverage, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">{{#avgcoverage}}{{avgcoverage}}%{{/avgcoverage}}{{^avgcoverage}}-{{/avgcoverage}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_dim_feedback_depth, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">{{#avgdepth}}{{avgdepth}}%{{/avgdepth}}{{^avgdepth}}-{{/avgdepth}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_dim_feedback_personalisation, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">{{#avgpersonalisation}}{{avgpersonalisation}}%{{/avgpersonalisation}}{{^avgpersonalisation}}-{{/avgpersonalisation}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>{{#str}}lecturer_method_col_indicator, local_coifish{{/str}}</th>
+                                <th>{{#str}}lecturer_method_col_source, local_coifish{{/str}}</th>
+                                <th>{{#str}}lecturer_method_col_benchmark, local_coifish{{/str}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_coverage, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_coverage, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_coverage, local_coifish{{/str}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_depth, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_depth, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_depth, local_coifish{{/str}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_personalisation, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_personalisation, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_personalisation, local_coifish{{/str}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-secondary small py-2 mb-0">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_feedback_cite, local_coifish{{/str}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="coifish-kpi-turnaround-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-clock-o me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_turnaround_title, local_coifish{{/str}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <div class="fs-1 fw-bold">
+                            {{#avgturnarounddays}}{{avgturnarounddays}}{{/avgturnarounddays}}{{^avgturnarounddays}}-{{/avgturnarounddays}}
+                        </div>
+                        <div class="text-muted">{{#str}}lecturer_kpi_turnaround_unit, local_coifish{{/str}}</div>
+                    </div>
+                    <p>{{#str}}lecturer_method_turnaround_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-0">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_turnaround_cite, local_coifish{{/str}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="coifish-kpi-intervention-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-clipboard me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_intervention_title, local_coifish{{/str}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_kpi_intv_total, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">{{totalinterventions}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_kpi_intv_improved, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold text-success">{{interventionsimproved}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_kpi_intv_rate, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">
+                                        {{#interventioneffectiveness}}{{interventioneffectiveness}}%{{/interventioneffectiveness}}
+                                        {{^interventioneffectiveness}}-{{/interventioneffectiveness}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{#str}}lecturer_method_intervention_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-0">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_intervention_cite, local_coifish{{/str}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="coifish-kpi-outcomes-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-graduation-cap me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_outcomes_title, local_coifish{{/str}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_kpi_outcomes_avg, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">
+                                        {{#avgstudentgrade}}{{avgstudentgrade}}%{{/avgstudentgrade}}{{^avgstudentgrade}}-{{/avgstudentgrade}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card text-center h-100">
+                                <div class="card-body py-2">
+                                    <div class="text-muted small">{{#str}}lecturer_kpi_outcomes_trend, local_coifish{{/str}}</div>
+                                    <div class="fs-4 fw-bold">{{studentgradetrendlabel}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{#str}}lecturer_method_outcomes_desc, local_coifish{{/str}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{! Activity time breakdown }}
+    {{#hashours}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fa fa-clock-o me-1" aria-hidden="true"></i>
+                {{#str}}lecturer_time_title, local_coifish{{/str}}
+                <span class="badge bg-secondary ms-2">{{hours_total}} {{#str}}lecturer_time_hours, local_coifish{{/str}}</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <div class="fs-3 fw-bold text-primary">{{hours_marking}}</div>
+                        <div class="small text-muted">{{#str}}lecturer_time_marking, local_coifish{{/str}}</div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-primary" role="progressbar"
+                                 style="width: {{#hours_total}}{{#hours_marking}}calc({{hours_marking}} / {{hours_total}} * 100%){{/hours_marking}}{{/hours_total}}"
+                                 aria-valuenow="{{hours_marking}}" aria-valuemin="0" aria-valuemax="{{hours_total}}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <div class="fs-3 fw-bold text-success">{{hours_communication}}</div>
+                        <div class="small text-muted">{{#str}}lecturer_time_communication, local_coifish{{/str}}</div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-success" role="progressbar"
+                                 style="width: {{#hours_total}}{{#hours_communication}}calc({{hours_communication}} / {{hours_total}} * 100%){{/hours_communication}}{{/hours_total}}"
+                                 aria-valuenow="{{hours_communication}}" aria-valuemin="0" aria-valuemax="{{hours_total}}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <div class="fs-3 fw-bold text-info">{{hours_livesessions}}</div>
+                        <div class="small text-muted">{{#str}}lecturer_time_livesessions, local_coifish{{/str}}</div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-info" role="progressbar"
+                                 style="width: {{#hours_total}}{{#hours_livesessions}}calc({{hours_livesessions}} / {{hours_total}} * 100%){{/hours_livesessions}}{{/hours_total}}"
+                                 aria-valuenow="{{hours_livesessions}}" aria-valuemin="0" aria-valuemax="{{hours_total}}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted small mt-3 mb-0">
+                <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+                {{#str}}lecturer_time_disclaimer, local_coifish{{/str}}
+            </p>
+        </div>
+    </div>
+    {{/hashours}}
+
+    {{! Dimension breakdown }}
+    {{#hasdimensions}}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fa fa-bar-chart me-1" aria-hidden="true"></i>
+                {{#str}}lecturer_dimensions, local_coifish{{/str}}
+            </h5>
+        </div>
+        <div class="card-body">
+            {{#dimensions}}
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="small fw-semibold">{{label}}</span>
+                    {{#hasscore}}
+                    <span class="small text-muted">{{score}}%</span>
+                    {{/hasscore}}
+                    {{^hasscore}}
+                    <span class="small text-muted">-</span>
+                    {{/hasscore}}
+                </div>
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar {{barclass}}" role="progressbar"
+                         style="width: {{score}}%"
+                         aria-valuenow="{{score}}" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+            {{/dimensions}}
+        </div>
+    </div>
+    {{/hasdimensions}}
+
+    {{! Strengths }}
+    {{#hasstrengths}}
+    <div class="mb-4">
+        <h5>
+            <i class="fa fa-star text-success me-1" aria-hidden="true"></i>
+            {{#str}}lecturer_strengths, local_coifish{{/str}}
+        </h5>
+        <div class="row g-3">
+            {{#strengths}}
+            <div class="col-md-4">
+                <div class="card h-100 border-success">
+                    <div class="card-body py-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fa fa-check-circle text-success me-2" aria-hidden="true"></i>
+                            <span class="fw-semibold">{{label}}</span>
+                        </div>
+                        <p class="small text-muted mb-0">{{text}}</p>
+                    </div>
+                </div>
+            </div>
+            {{/strengths}}
+        </div>
+    </div>
+    {{/hasstrengths}}
+
+    {{! Focus areas }}
+    {{#hasfocusareas}}
+    <div class="mb-4">
+        <h5>
+            <i class="fa fa-compass text-warning me-1" aria-hidden="true"></i>
+            {{#str}}lecturer_focus_areas, local_coifish{{/str}}
+        </h5>
+        <div class="row g-3">
+            {{#focusareas}}
+            <div class="col-md-4">
+                <div class="card h-100 border-warning">
+                    <div class="card-body py-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fa fa-arrow-circle-up text-warning me-2" aria-hidden="true"></i>
+                            <span class="fw-semibold">{{label}}</span>
+                        </div>
+                        <p class="small text-muted mb-0">{{text}}</p>
+                    </div>
+                </div>
+            </div>
+            {{/focusareas}}
+        </div>
+    </div>
+    {{/hasfocusareas}}
+
+    {{! Methodology transparency link }}
+    <div class="text-center mt-3 mb-4">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#coifish-lecturer-method-modal" class="small text-muted">
+            <i class="fa fa-question-circle me-1" aria-hidden="true"></i>
+            {{#str}}lecturer_method_link, local_coifish{{/str}}
+        </a>
+    </div>
+
+    {{! Methodology modal }}
+    <div class="modal fade" id="coifish-lecturer-method-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_title, local_coifish{{/str}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{#str}}lecturer_method_intro, local_coifish{{/str}}</p>
+
+                    {{! Feedback quality }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-comment-o me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_feedback_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_feedback_desc, local_coifish{{/str}}</p>
+                    <table class="table table-sm table-bordered mb-3">
+                        <thead class="table-light">
+                            <tr>
+                                <th>{{#str}}lecturer_method_col_indicator, local_coifish{{/str}}</th>
+                                <th>{{#str}}lecturer_method_col_source, local_coifish{{/str}}</th>
+                                <th>{{#str}}lecturer_method_col_benchmark, local_coifish{{/str}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_coverage, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_coverage, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_coverage, local_coifish{{/str}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_depth, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_depth, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_depth, local_coifish{{/str}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{#str}}lecturer_dim_feedback_personalisation, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_source_personalisation, local_coifish{{/str}}</td>
+                                <td class="small">{{#str}}lecturer_method_bench_personalisation, local_coifish{{/str}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-secondary small py-2 mb-3">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_feedback_cite, local_coifish{{/str}}
+                    </div>
+
+                    {{! Grading turnaround }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-clock-o me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_turnaround_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_turnaround_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-3">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_turnaround_cite, local_coifish{{/str}}
+                    </div>
+
+                    {{! Intervention effectiveness }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-clipboard me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_intervention_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_intervention_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-3">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_intervention_cite, local_coifish{{/str}}
+                    </div>
+
+                    {{! Forum engagement }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-comments me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_forum_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_forum_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-3">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_forum_cite, local_coifish{{/str}}
+                    </div>
+
+                    {{! Student outcomes }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-graduation-cap me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_outcomes_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_outcomes_desc, local_coifish{{/str}}</p>
+
+                    {{! Time estimation }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-clock-o me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_time_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_time_desc, local_coifish{{/str}}</p>
+                    <div class="alert alert-secondary small py-2 mb-3">
+                        <i class="fa fa-book me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_time_cite, local_coifish{{/str}}
+                    </div>
+
+                    {{! Strengths and focus areas }}
+                    <h6 class="fw-bold mt-4 mb-2">
+                        <i class="fa fa-star me-1" aria-hidden="true"></i>
+                        {{#str}}lecturer_method_strengths_title, local_coifish{{/str}}
+                    </h6>
+                    <p class="small">{{#str}}lecturer_method_strengths_desc, local_coifish{{/str}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{/hasprofile}}
+
+    {{^hasprofile}}
+    <div class="alert alert-info d-flex align-items-center">
+        <i class="fa fa-info-circle me-2" aria-hidden="true"></i>
+        {{#str}}lecturer_no_profile, local_coifish{{/str}}
+    </div>
+    {{/hasprofile}}
+
+</div>

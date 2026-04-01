@@ -1,0 +1,112 @@
+{{!
+    @template local_coifish/lecturer_list
+
+    Lecturer list overview page.
+
+    Displays all lecturers with key performance metrics and links
+    to individual lecturer profile pages. Filterable by course category.
+
+    Context variables required for this template:
+    * haslecturers (bool) - Whether any lecturer profiles were found.
+    * lecturers (array) - Array of lecturer profile data.
+    * categories (array) - Course categories for filter dropdown.
+    * selectedcategory (int) - Currently selected category ID.
+    * formurl (string) - Form action URL.
+
+    Example context (json):
+    {
+        "haslecturers": true,
+        "lecturers": [],
+        "categories": [],
+        "selectedcategory": 0,
+        "formurl": "/local/coifish/lecturerprofile.php"
+    }
+}}
+<div class="local-coifish-lecturer-list">
+
+    {{! Category filter }}
+    <form method="get" action="{{formurl}}" class="mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-sm-5 col-lg-4">
+                <label for="coifish-lect-org-filter" class="form-label small text-muted">
+                    {{filterlabel}}
+                </label>
+                <select name="{{filterparamname}}" id="coifish-lect-org-filter" class="form-select form-select-sm">
+                    <option value="0">{{filteralllabel}}</option>
+                    {{#filteroptions}}
+                        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                    {{/filteroptions}}
+                </select>
+            </div>
+            <div class="col-sm-3 col-lg-2">
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="fa fa-filter me-1" aria-hidden="true"></i>
+                    {{#str}}filter_apply, local_coifish{{/str}}
+                </button>
+            </div>
+        </div>
+    </form>
+
+    {{! Export link }}
+    <div class="mb-3">
+        <a href="{{exporturl}}" class="btn btn-outline-secondary btn-sm">
+            <i class="fa fa-download me-1" aria-hidden="true"></i>
+            {{#str}}export_link, local_coifish{{/str}}
+        </a>
+    </div>
+
+    {{! Lecturer table }}
+    {{#haslecturers}}
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>{{#str}}col_lecturer, local_coifish{{/str}}</th>
+                            <th class="text-center">{{#str}}col_courses, local_coifish{{/str}}</th>
+                            <th class="text-center">{{#str}}lecturer_feedback_quality, local_coifish{{/str}}</th>
+                            <th class="text-center">{{#str}}lecturer_turnaround, local_coifish{{/str}}</th>
+                            <th class="text-center">{{#str}}lecturer_intervention_eff, local_coifish{{/str}}</th>
+                            <th class="text-center">{{#str}}col_student_grade_trend, local_coifish{{/str}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#lecturers}}
+                        <tr>
+                            <td>
+                                <a href="{{viewurl}}" class="fw-semibold">
+                                    {{fullname}}
+                                </a>
+                            </td>
+                            <td class="text-center">{{coursecount}}</td>
+                            <td class="text-center">
+                                {{#avgfeedbackquality}}{{avgfeedbackquality}}%{{/avgfeedbackquality}}
+                                {{^avgfeedbackquality}}<span class="text-muted">-</span>{{/avgfeedbackquality}}
+                            </td>
+                            <td class="text-center">
+                                {{#avgturnarounddays}}{{avgturnarounddays}}d{{/avgturnarounddays}}
+                                {{^avgturnarounddays}}<span class="text-muted">-</span>{{/avgturnarounddays}}
+                            </td>
+                            <td class="text-center">
+                                {{#interventioneffectiveness}}{{interventioneffectiveness}}%{{/interventioneffectiveness}}
+                                {{^interventioneffectiveness}}<span class="text-muted">-</span>{{/interventioneffectiveness}}
+                            </td>
+                            <td class="text-center">{{studentgradetrendlabel}}</td>
+                        </tr>
+                        {{/lecturers}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{/haslecturers}}
+
+    {{^haslecturers}}
+    <div class="alert alert-info d-flex align-items-center">
+        <i class="fa fa-info-circle me-2" aria-hidden="true"></i>
+        {{#str}}no_lecturer_profiles, local_coifish{{/str}}
+    </div>
+    {{/haslecturers}}
+
+</div>
