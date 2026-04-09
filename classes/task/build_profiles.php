@@ -201,11 +201,29 @@ class build_profiles extends scheduled_task {
         );
         $engagement = $totalactivities > 0 ? min(100, round(($engaged / $totalactivities) * 100)) : null;
 
-        // Social presence: forum thread participation.
-        $totaldiscussions = (int)$DB->count_records_sql(
-            "SELECT COUNT(fd.id) FROM {forum_discussions} fd WHERE fd.course = :cid",
-            ['cid' => $courseid]
+        // Social presence: composite of forum breadth, volume, and collaborative activity.
+        // Group-aware: count only discussions visible to the student.
+        $alldiscussions = $DB->get_records_sql(
+            "SELECT fd.id, fd.groupid, cm.groupmode
+               FROM {forum_discussions} fd
+               JOIN {forum} f ON f.id = fd.forum
+               JOIN {course_modules} cm ON cm.instance = f.id AND cm.course = :cid
+               JOIN {modules} m ON m.id = cm.module AND m.name = 'forum'
+              WHERE fd.course = :cid2",
+            ['cid' => $courseid, 'cid2' => $courseid]
         );
+        $usergroups = groups_get_user_groups($courseid, $userid);
+        $mygroupids = $usergroups[0] ?? [];
+        $visiblediscussions = 0;
+        foreach ($alldiscussions as $disc) {
+            if ((int)$disc->groupmode === SEPARATEGROUPS) {
+                if ((int)$disc->groupid === -1 || in_array((int)$disc->groupid, $mygroupids)) {
+                    $visiblediscussions++;
+                }
+            } else {
+                $visiblediscussions++;
+            }
+        }
         $threads = (int)$DB->count_records_sql(
             "SELECT COUNT(DISTINCT fd.id)
                FROM {forum_posts} fp
@@ -213,7 +231,22 @@ class build_profiles extends scheduled_task {
               WHERE fd.course = :cid AND fp.userid = :uid",
             ['cid' => $courseid, 'uid' => $userid]
         );
-        $social = $totaldiscussions > 0 ? min(100, round(($threads / $totaldiscussions) * 100)) : null;
+        $postcount = (int)$DB->count_records_sql(
+            "SELECT COUNT(fp.id)
+               FROM {forum_posts} fp
+               JOIN {forum_discussions} fd ON fd.id = fp.discussion
+              WHERE fd.course = :cid AND fp.userid = :uid",
+            ['cid' => $courseid, 'uid' => $userid]
+        );
+        // Breadth against visible discussions.
+        $breadth = $visiblediscussions > 0
+            ? min(100, round(($threads / $visiblediscussions) * 200))
+            : ($threads > 0 ? 50 : 0);
+        // Volume: 5 posts = 100%.
+        $volume = min(100, round($postcount / 5 * 100));
+        $social = ($breadth > 0 || $volume > 0)
+            ? round($breadth * 0.6 + $volume * 0.4)
+            : null;
 
         // Feedback review percentage.
         $totalfeedback = (int)$DB->count_records_sql(

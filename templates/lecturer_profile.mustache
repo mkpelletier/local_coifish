@@ -641,6 +641,33 @@
         </div>
     </div>
 
+    {{! Debug panel — visible only with ?debug=1 }}
+    {{#showdebug}}
+    <div class="card mb-4 border-warning">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fa fa-bug me-1" aria-hidden="true"></i> Debug: Raw profile values</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-sm table-bordered mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#debugdata}}
+                    <tr>
+                        <td class="fw-semibold small">{{key}}</td>
+                        <td class="small font-monospace">{{value}}</td>
+                    </tr>
+                    {{/debugdata}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{/showdebug}}
+
     {{/hasprofile}}
 
     {{^hasprofile}}

@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.1] - 2026-04-09
+
+### Changed
+- **Social presence snapshot** — Course snapshots now use the same group-aware composite methodology as the grade report: forum breadth (60%) + volume (40%), respecting separate group modes.
+- Configurable teaching roles setting for institutions with custom roles.
+- Course category filter to exclude development/test courses from reports.
+- Cohort filter respects course pattern when a specific cohort is selected (admins no longer bypass filtering).
+- Debug panel available on lecturer profile via `?debug=1` URL parameter.
+
 ## [1.2.0] - 2026-04-02
 
 ### Added

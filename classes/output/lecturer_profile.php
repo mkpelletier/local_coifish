@@ -185,6 +185,24 @@ class lecturer_profile implements renderable, templatable {
             $data->backurl = (new \moodle_url('/local/coifish/lecturerprofile.php'))->out(false);
         }
 
+        // Debug mode — show raw values when ?debug=1 is in the URL.
+        $data->showdebug = optional_param('debug', 0, PARAM_BOOL);
+        if ($data->showdebug) {
+            $data->debugdata = [];
+            foreach ($profile as $key => $value) {
+                if (is_array($value)) {
+                    $displayvalue = json_encode($value);
+                } else if (is_bool($value)) {
+                    $displayvalue = $value ? 'true' : 'false';
+                } else if ($value === null) {
+                    $displayvalue = '(null)';
+                } else {
+                    $displayvalue = (string)$value;
+                }
+                $data->debugdata[] = ['key' => $key, 'value' => $displayvalue];
+            }
+        }
+
         return $data;
     }
 
